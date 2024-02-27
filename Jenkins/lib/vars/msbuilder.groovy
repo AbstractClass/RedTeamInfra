@@ -15,11 +15,13 @@ def call(String dotNetVersion = '') {
 
     echo '[+] Build complete'
 
-    echo fileOperations([
-        fileRenameOperation(
-            source: "${JOB_NAME}/bin/Release/${JOB_NAME}.exe",
-            destination: "${JOB_NAME}/bin/Release/${JOB_NAME}_${dotNetVersion}.exe"
-        )
-    ])
-    echo "[*] Binary renamed to ${JOB_NAME}/bin/Release/${JOB_NAME}_${dotNetVersion}.exe"
+    if (dotNetVersion) {
+        fileOperations([
+            fileRenameOperation(
+                source: "${JOB_NAME}/bin/Release/${JOB_NAME}.exe",
+                destination: "${JOB_NAME}/bin/Release/${JOB_NAME}_${dotNetVersion}.exe"
+            )
+        ])
+        echo "[*] Binary renamed to ${JOB_NAME}/bin/Release/${JOB_NAME}_${dotNetVersion}.exe"
+    }
 }
