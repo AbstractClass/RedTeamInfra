@@ -7,7 +7,12 @@ def call(String binaryLocation) {
                 echo $result
                 $hash = $result.Split()[1]
                 $report = vt analysis $hash
-                echo $report
+                echo $report | Format-Table
+                if (echo $report | Select-String -Pattern '"malicious"') {
+                    echo '[!] Some AVs marked this as "malicious" !'
+                } else {
+                    ehco '[+] You're clean, no AVs detected this as malicious. Good job!
+                }
             '''
         }
         echo '[+] VirusTotal report complete'
