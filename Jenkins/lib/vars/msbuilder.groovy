@@ -2,10 +2,11 @@ def call(String dotNetVersion = '') {
     withEnv(["dotNetVersion=${dotNetVersion}", "JOB_NAME=${JOB_NAME}"]) {
         powershell script: '''
             if ($env:dotNetVersion -eq '') {
-                $arg = ''
+                Write-Host "[*] No version selected, using default";
+                $arg = '';
             } else {
-                $arg = '/p:TargetFrameworkVersion=v' + $env:dotNetVersion
-            }
+                $arg = '/p:TargetFrameworkVersion=v' + $env:dotNetVersion;
+            };
             $target = $env:JOB_NAME + '.sln';
             msbuild $target /t:build -restore /p:RestorePackagesConfig=true /p:Configuration=Release $arg;
         '''
