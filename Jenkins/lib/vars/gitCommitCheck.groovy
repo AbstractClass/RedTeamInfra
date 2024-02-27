@@ -1,5 +1,10 @@
-def buildStatus = currentBuild.result;
 def call() {
+    def isUserRun = currentBuild.getRawBuild.getCause(hudson.model.Cause$UserIdCause) != null
+    if (isUserRun) {
+        echo "[*] User run, skipping check"
+        reutrn
+    }
+    def buildStatus = currentBuild.result;
     withEnv(["buildStatus=${buildStatus}", "JOB_NAME=${JOB_NAME}"]) {
         def result = powershell returnStatus: true, script: '''
             echo "[*] Checking latest commit for changes";
