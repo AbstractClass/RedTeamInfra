@@ -1,5 +1,5 @@
 def call() {
-    def isUserRun = currentBuild.getRawBuild.getCause(hudson.model.Cause$UserIdCause) != null
+    def isUserRun = currentBuild.rawBuild.getCause(hudson.model.Cause$UserIdCause) != null
     if (isUserRun) {
         echo "[*] User run, skipping check"
         reutrn
