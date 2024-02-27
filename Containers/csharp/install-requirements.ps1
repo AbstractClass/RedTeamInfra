@@ -3,7 +3,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 ### Install Chocolatey prereqs ###
-choco install -y git 7zip python3
+choco install -y git 7zip python3 vt-cli
 refreshenv
 #RUN choco upgrade -y visualstudio2022-workload-vctools visualstudio2019-workload-vctools
 
