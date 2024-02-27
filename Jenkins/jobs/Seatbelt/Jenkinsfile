@@ -10,9 +10,22 @@ pipeline {
         }
     }
     parameters {
-        booleanParam(name: 'InvisibilityCloak', defaultValue: true, description: 'Obfuscate the project with InvisibilityCloak')
-        choice(name: 'CloakMethod', choices: ['base64', 'rot13', 'reverse'], description: 'InvisibilityCloak method')
-        booleanParam(name: 'ConfuserEx', defaultValue: true, description: 'Obfuscate the binary with ConfuserEx')
+        booleanParam(
+            name: 'InvisibilityCloak', 
+            defaultValue: true, 
+            description: 'Obfuscate the project with InvisibilityCloak')
+        choice(
+            name: 'CloakMethod', 
+            choices: ['base64', 'rot13', 'reverse'], 
+            description: 'InvisibilityCloak method')
+        booleanParam(
+            name: 'ConfuserEx', 
+            defaultValue: true, 
+            description: 'Obfuscate the binary with ConfuserEx')
+        booleanParam(
+            name: 'VirusTotal', 
+            defaultValue: false, 
+            description: 'Submit the payload to VT. If there are detections, build will be set to unstable')
     }
     stages {
         stage('Checkout') {
@@ -49,9 +62,19 @@ pipeline {
                 confuserEx("./Seatbelt/bin/release/Seatbelt.exe")
             }
         }
+        stage('VirusTotal') {
+            when { expression {return params.VirusTotal }}
+            steps {
+                echo '[*] Submitting payload to VirusTotal'
+                virusTotal('./Seatbelt/bin/release/Seatbelt.exe')
+            }
+        }
     }
     post {
         success {
+            archiveArtifacts artifacts: "**/bin/Release/*.exe", fingerprint: true
+        }
+        unstable {
             archiveArtifacts artifacts: "**/bin/Release/*.exe", fingerprint: true
         }
     }
