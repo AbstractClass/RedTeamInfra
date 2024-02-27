@@ -3,7 +3,9 @@ def call(String binaryLocation) {
     withCredentials(bindings: [string(credentialsId: 'VirusTotal', variable: 'VTCLI_APIKEY')]) {
         withEnv(["binaryLocation=${binaryLocation}"]) {
             powershell script: '''
-                $hash = $(vt scan file $env:binaryLocation --silent).Split()[1]
+                $result = $(vt scan file $env:binaryLocation --silent).Split()[1]
+                echo $result
+                $hash = $result.Split()[1]
                 $report = vt analysis $hash
                 echo $report
             '''
