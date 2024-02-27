@@ -7,12 +7,12 @@ def call(String binaryLocation) {
                 echo $result
                 $hash = $result.Split()[1]
                 $report = vt analysis $hash
-                echo $report | Format-Table
                 while (echo $report | Select-String -Pattern 'status: "queued"') {
                     echo "Report analyzing, waiting 5s ..."
                     Start-Sleep -Seconds 5
                     $report = vt analysis $hash
                 }
+                echo $report
                 if (echo $report | Select-String -Pattern '"malicious"') {
                     echo '[!] Some AVs marked this as "malicious" !'
                 } else {
