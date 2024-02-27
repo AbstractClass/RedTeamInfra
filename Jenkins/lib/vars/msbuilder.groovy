@@ -15,7 +15,7 @@ def call(String dotNetVersion = '') {
 
     echo '[+] Build complete'
 
-    if (dotNetVersion) {
+    if (dotNetVersion != '') {
         fileOperations([
             fileRenameOperation(
                 source: "${JOB_NAME}/bin/Release/${JOB_NAME}.exe",
