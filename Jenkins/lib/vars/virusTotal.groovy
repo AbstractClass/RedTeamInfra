@@ -5,10 +5,10 @@ def call(String binaryLocation) {
             powershell script: '''
                 $hash = $(vt scan file $env:binaryLocation --silent).Split()[1]
                 $report = vt analysis $hash
-                Write-Host '[+] Report: \n' + $report
+                echo $report
             '''
         }
         echo '[+] VirusTotal report complete'
-        findText(textFinder: [textFinder(buildResult: 'UNSTABLE', alsoCheckConsoleOutput: true, regexp: 'malicious')])
+        findText(textFinder: [textFinders(buildResult: 'UNSTABLE', alsoCheckConsoleOutput: true, regexp: '\"malicious\"')])
     }
 }
