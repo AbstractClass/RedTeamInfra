@@ -9,6 +9,6 @@ def call(String binaryLocation) {
             '''
         }
         echo '[+] VirusTotal report complete'
-        findText(textFinder: [textFinders(buildResult: 'UNSTABLE', alsoCheckConsoleOutput: true, regexp: '\"malicious\"')])
+        findText(textFinders: [textFinder(buildResult: 'UNSTABLE', alsoCheckConsoleOutput: true, regexp: '\"malicious\"')])
     }
 }
