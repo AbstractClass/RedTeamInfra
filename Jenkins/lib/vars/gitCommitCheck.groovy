@@ -2,7 +2,7 @@ def call() {
     def isUserRun = currentBuild.rawBuild.getCause(hudson.model.Cause$UserIdCause) != null
     if (isUserRun) {
         echo "[*] User run, skipping check"
-        reutrn
+        return
     }
     def buildStatus = currentBuild.result;
     withEnv(["buildStatus=${buildStatus}", "JOB_NAME=${JOB_NAME}"]) {
