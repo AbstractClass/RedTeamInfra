@@ -1,3 +1,12 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: "VirusTotal API key"
+          id: "VirusTotal"
+          scope: GLOBAL
+          secret: "{REDACTED}"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
@@ -35,7 +44,12 @@ jenkins:
   nodes:
   - permanent:
       labelString: "windows docker"
-      launcher: "inbound"
+      launcher:
+        inbound:
+          workDirSettings:
+            disabled: false
+            failIfWorkDirIsMissing: false
+            internalDir: "remoting"
       name: "Windows"
       nodeDescription: "Host Containing Window Docker images for building Windows\
         \ payloads."
@@ -123,11 +137,6 @@ unclassified:
     maxAttachmentSizeMb: -1
     precedenceBulk: false
     watchingEnabled: false
-  enrichedSummaryConfig:
-    enrichedSummaryEnabled: false
-    httpClientDelayBetweenRetriesInSeconds: 1
-    httpClientMaxRetries: 3
-    httpClientTimeoutInSeconds: 1
   fingerprints:
     fingerprintCleanupDisabled: false
     storage: "file"
@@ -152,13 +161,6 @@ unclassified:
     operations:
     - "abortOperation"
     overwriteable: false
-  injectionConfig:
-    allowUntrusted: false
-    checkForBuildAgentErrors: false
-    enabled: false
-    enforceUrl: false
-    injectCcudExtension: false
-    injectMavenExtension: false
   junitTestResultStorage:
     storage: "file"
   location:
