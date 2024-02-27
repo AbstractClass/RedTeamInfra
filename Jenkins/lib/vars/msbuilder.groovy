@@ -1,6 +1,7 @@
 def call(String dotNetVersion = '') {
     withEnv(["dotNetVersion=${dotNetVersion}", "JOB_NAME=${JOB_NAME}"]) {
         powershell script: '''
+            Write-Host "[*] Value of dotNetVersion is '$env:dotNetVersion'"
             if ($env:dotNetVersion -eq '') {
                 Write-Host "[*] No version selected, using default";
                 $arg = '';
