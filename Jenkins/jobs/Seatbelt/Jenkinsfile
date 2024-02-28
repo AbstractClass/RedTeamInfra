@@ -1,6 +1,6 @@
 @Library('csharp')
 def gitURL = "https://github.com/GhostPack/Seatbelt"
-def branch = "master"
+def branch = "953f764a57388868bd70ee0d0bca3a2d82081c22"
 
 pipeline {
     agent {
@@ -39,6 +39,7 @@ pipeline {
                     submoduleCfg: [], 
                     userRemoteConfigs: [[url: gitURL]]
                 ])
+                gitCommitCheck()
             }
         }
         stage('Cloak') {
@@ -73,6 +74,7 @@ pipeline {
     post {
         success {
             archiveArtifacts artifacts: "**/bin/Release/*.exe", fingerprint: true
+            // <user's> build finished with status <buildstatus>
         }
         unstable {
             archiveArtifacts artifacts: "**/bin/Release/*.exe", fingerprint: true
