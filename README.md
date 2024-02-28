@@ -58,7 +58,7 @@ sudo systemctl start jenkins
 	- Matrix Authorization Strategy
 	- Dark Theme
 7. Create your admin user by filling out the form
-![[Pasted image 20240116194037.png]]
+
 8. You are ready to go!
 
 ## Setting up a Node
@@ -120,14 +120,14 @@ RUN .\install-requirements.ps1
 
 ### Adding an Agent
 In Jenkins, head to your Nodes (`/computer`) and click the `New Node` button. Remember that we are adding the Windows **host** as an agent, and will be calling Docker from that host. The idea is in the future we can create more Docker containers and launch them from this host. So let's name the host 'Windows'.
-![[Pasted image 20240226151220.png]]
+
 
 Then we will set some basic information about the Node. Nothing here is actually important and is just human readable information. We will make use of the labels later, but the information can also be edited at any time.
-![[Pasted image 20240226151402.png]]
+
 > Everything else on this page can be left default
 
 That's it, our Node has been created. But we still have to add the Jenkins agent to the node so it can communicate with the server. We can see how to do this by clicking on the node name from the menu and going to the node status page.
-![[Pasted image 20240226151549.png]]
+
 
 Since we are using a Windows host we can just copy the Windows code.
 ```ad-warning
@@ -135,13 +135,13 @@ WAIT! We know that Jenkins needs java to function, the same is true for the agen
 ```
 
 If you notice connection error when the agent is trying to connect then you might need to switch the Jenkins URL from `localhost` to the IP of your server. This can be done from the "System" page of the management dashboard.
-![[Pasted image 20240226153113.png]]
+
 
 If you are getting an HTTP 404 error when the agent tries to connect then you need to alter the agent inbound port settings. Go to the "Security" page of the management dashboard and select "Random" for the "TCP Port for Inbound Agents" setting:
-![[Pasted image 20240226153653.png]]
+
 
 You know you are done when the agent status shows connected and you can see the node machine information:
-![[Pasted image 20240226155655.png]]
+
 
 ## Our First Pipeline
 ### Creating the Pipeline
@@ -186,7 +186,7 @@ pipeline {
 If the job is completing but warns that there are "no steps" then make sure you have the `Pipeline` plugin installed!
 ```
 
-![[Pasted image 20240226202451.png]]
+
 
 Ok that works, let's use the right agent now, we want to use the "Windows" node and use the "csharp:latest" docker image. Change the `agent` tag to the following:
 ```Groovy
@@ -198,7 +198,7 @@ agent {
 }
 ```
 
-![[Pasted image 20240226202517.png]]
+
 
 Running the job again shows a success and if we click into the job and view the console output we can see it is launching the docker container. Now that we have that down let's start mapping out the process of doing the build.
 
@@ -233,7 +233,7 @@ stage('validate') {
 }
 ```
 
-![[Pasted image 20240226202535.png]]
+
 
 That looks good, we didn't even have to change directories into the repo, that's going to be important information. Let's move on to building! We will need to create a new stage where we can compile the project.
 ```Groovy
@@ -555,7 +555,7 @@ Wouldn't it be great if we ran some kind of detection when we compile these payl
 
 For the sake of this demonstration we will use the VirusTotal free API. Go ahead and create a VirusTotal account and get your API key. Once you have it we can add it to Jenkins securely. Go to "Manage Jenkins" and select "Credentials". Select the "global" domain and select "+ Add Credentials". 
 
-![[Pasted image 20240227153624.png]]
+
 
 ```ad-note
 Observe that credentials can be scoped to a specific domain. If you are going to be managing a lot of credentials or need only certain users to have access to credentials then you can utilize this feature, but for the sake of the demonstration we will just use the global domain.
@@ -563,10 +563,10 @@ Observe that credentials can be scoped to a specific domain. If you are going to
 
 Select "secret text" for our API key, paste in the key and chose a short but descriptive name for our key (i.e. "VirusTotal" or "VirusTotalKey").
 
-![[Pasted image 20240227153635.png]]
+
 Now let's create a new function to call the API and submit our payload, then get the result. We could write API calls with PowerShell or Python directly, but there is already a VirusTotal CLI tools and it's available on Chocolatey, so let's update our Docker script `install-requirements.ps1` to install it.
 
-![[Pasted image 20240227160128.png]]
+
 
 Now we can create `virusTotal.groovy`:
 ```Groovy
@@ -649,7 +649,7 @@ post {
 
 There, now we can run it again and see if VT catches us (spoiler: it definitely will).
 
-![[Pasted image 20240227165249.png]]
+
 
 ## Next Steps
 There are several things I just simply won't have time to cover but have explored and/or already implemented privately. Some things to consider:
